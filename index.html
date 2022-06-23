@@ -1,0 +1,663 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPS QUIZ PONG</title>
+
+    <!-- Bootsrap 5 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dongle&family=Noto+Sans&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+    <!-- custom css and scss -->
+    <style>
+        body, .container-fluid{
+            margin: 0%;
+            padding: 0%;
+            font-family: 'Dongle', sans-serif;
+            font-family: 'Noto Sans', sans-serif;
+            font-family: 'Nunito', sans-serif;
+        }
+        body{
+            height: 100vh;
+            background-color: rgb(226, 236, 245);
+        }
+        .question-box{
+            background-color: rgba(37, 146, 247, 0.648);
+            width: 46%;
+            border-radius: .4rem;
+
+            -webkit-box-shadow: 7px 7px 18px -7px rgba(0,0,0,0.75);
+            -moz-box-shadow: 7px 7px 18px -7px rgba(0,0,0,0.75);
+            box-shadow: 7px 7px 18px -7px rgba(0,0,0,0.75);
+        }
+
+        .btn{
+            min-width:200px;
+            background-color: black;
+            border: none;
+            transition: .3s;
+            font-weight: 500;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+            color: aliceblue;
+        }
+
+        .btn:hover{
+            background-color: rgb(37, 145, 247);
+        }
+
+        .btn:focus{
+            background-color:rgb(37, 145, 247);
+    
+        }
+
+        .card-header1{
+            position: absolute;
+            top: 8rem;
+        }
+
+        .answer-box{
+            background-color: rgb(127, 255, 150);
+            padding: 1rem;
+            width: 46%;
+            text-align: center;
+            border-radius: .4rem;
+            height: 80px;
+        }
+        /* anim */
+        svg{
+            filter: drop-shadow(3px 2px 10px #979797);
+        }
+
+        #answerid{
+            font-size: large;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 1s linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid ">
+       
+        <!-- <svg id="wave" style="transform:rotate(180deg); transition: 0.3s" viewBox="0 0 1440 220" version="1.1" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sw-gradient-0" x1="0" x2="0" y1="1" y2="0"><stop stop-color="rgba(62, 108.706, 243, 1)" offset="0%"></stop><stop stop-color="rgba(11, 156.628, 255, 1)" offset="100%"></stop></linearGradient></defs><path style="transform:translate(0, 0px); opacity:1" fill="url(#sw-gradient-0)" d="M0,0L60,14.7C120,29,240,59,360,84.3C480,110,600,132,720,139.3C840,147,960,139,1080,113.7C1200,88,1320,44,1440,47.7C1560,51,1680,103,1800,106.3C1920,110,2040,66,2160,66C2280,66,2400,110,2520,106.3C2640,103,2760,51,2880,40.3C3000,29,3120,59,3240,69.7C3360,81,3480,73,3600,66C3720,59,3840,51,3960,73.3C4080,95,4200,147,4320,139.3C4440,132,4560,66,4680,40.3C4800,15,4920,29,5040,33C5160,37,5280,29,5400,44C5520,59,5640,95,5760,110C5880,125,6000,117,6120,117.3C6240,117,6360,125,6480,121C6600,117,6720,103,6840,91.7C6960,81,7080,73,7200,62.3C7320,51,7440,37,7560,44C7680,51,7800,81,7920,110C8040,139,8160,169,8280,183.3C8400,198,8520,198,8580,198L8640,198L8640,220L8580,220C8520,220,8400,220,8280,220C8160,220,8040,220,7920,220C7800,220,7680,220,7560,220C7440,220,7320,220,7200,220C7080,220,6960,220,6840,220C6720,220,6600,220,6480,220C6360,220,6240,220,6120,220C6000,220,5880,220,5760,220C5640,220,5520,220,5400,220C5280,220,5160,220,5040,220C4920,220,4800,220,4680,220C4560,220,4440,220,4320,220C4200,220,4080,220,3960,220C3840,220,3720,220,3600,220C3480,220,3360,220,3240,220C3120,220,3000,220,2880,220C2760,220,2640,220,2520,220C2400,220,2280,220,2160,220C2040,220,1920,220,1800,220C1680,220,1560,220,1440,220C1320,220,1200,220,1080,220C960,220,840,220,720,220C600,220,480,220,360,220C240,220,120,220,60,220L0,220Z"></path></svg>         -->
+        
+        <div class="card-heade d-flex justify-content-between">
+            <img src="logo.png" alt=""  class="img-fluid">
+            <!-- <h1>CAPS - Quiz Pong</h1> -->
+        </div>
+
+        
+        <div class=" d-flex flex-column my-5  justify-content-evenly align-items-center">
+            
+            
+            <div class="question-box p-5 m-3 ">
+                <h4 class="text-center" id="questionid">
+                    What is brown and sticky?What is brown and sticky?What is brown and sticky?
+                </h4>
+            </div>
+
+            <div class="answer-box m-3 d-flex align-items-center justify-content-center" id="answerid">
+                <h2 id="answertextid">answer</h2>
+            </div>
+
+            <div class="row m-3">
+                <div class="btn-group-justified">
+                    
+                    <button id="answerbtnid" type="button" class="btn  m-3 p-2">Answer</button>
+                    <button id="generatebtnid" type="button" class="btn  m-3 p-2">Generate</button>
+                  </div> 
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        console.log("hello")
+
+        ansbtn = document.querySelector("#answerbtnid")
+        document.getElementById("answerbtnid").addEventListener("click", showAnswer);
+        document.getElementById("generatebtnid").addEventListener("click", generateRiddle);
+
+        function showAnswer() {
+            var node = document.getElementById('answerid');
+            if (node.style.visibility=='visible') {
+                node.style.visibility = 'hidden';
+                node.style.opacity = '0';
+            }
+            else{
+                node.style.visibility = 'visible';
+                node.style.opacity = '1';
+                console.log("visible")
+            }
+                
+        }
+
+        // json list of riddles and answer
+        var riddleList = [
+            {
+                "id": "0",
+                "question": "Which letter of the alphabet has the most water?",
+                "answer": "C"
+            },
+            {
+                "id": "1",
+                "question": "What kind of dog keeps the best time?",
+                "answer": "Watchdog"
+            },
+            {
+                "id": "2",
+                "question": "What time of day, when written in a capital letters, is the same forwards, backwards and upside down?",
+                "answer": "Noon"
+            },
+            {
+                "id": "3",
+                "question": "Laughing Out",
+                "answer": "Loud"
+            },
+            {
+                "id": "4",
+                "question": "A tasty reward given to well behaved dogs and kids",
+                "answer": "Treat"
+            },
+            {
+                "id": "5",
+                "question": "A caribbean shape that makes ships disappear",
+                "answer": "Triangle"
+            },
+            {
+                "id": "6",
+                "question": "It takes two people to do this",
+                "answer": "Tango"
+            },
+            {
+                "id": "7",
+                "question": "What has a face and two hands but no arms or legs?",
+                "answer": "Clock"
+            },
+            {
+                "id": "8",
+                "question": "What five-letter word becomes shorter when you add two letters to it?",
+                "answer": "Short"
+            },
+            {
+                "id": "9",
+                "question": "What word begins and ends with an 'E' but only has one letter?",
+                "answer": "Envelope"
+            },
+            {
+                "id": "10",
+                "question": "What has a neck but no head?",
+                "answer": "Bottle"
+            },
+            {
+                "id": "11",
+                "question": "What type of cheese is made backwards?",
+                "answer": "Edam"
+            },
+            {
+                "id": "12",
+                "question": "What gets wetter as it dries?",
+                "answer": "Towel"
+            },
+            {
+                "id": "13",
+                "question": "Which letter of the alphabet has the most water?",
+                "answer": "C"
+            },
+            {
+                "id": "14",
+                "question": "What starts with a 'P', ends with an 'E' and has thousands of letters?",
+                "answer": "Post Office"
+            },
+            {
+                "id": "15",
+                "question": "What has to be broken before you can eat it?",
+                "answer": "Egg"
+            },
+            {
+                "id": "16",
+                "question": "What begins with T, ends with T and has T in it?",
+                "answer": "Teapot"
+            },
+            {
+                "id": "17",
+                "question": "Teddy bears are never hungry because they are always what?",
+                "answer": "Stuffed"
+            },
+            {
+                "id": "18",
+                "question": "What belongs to you but others use it more than you do?",
+                "answer": "Name"
+            },
+            {
+                "id": "19",
+                "question": "The more you take aways, the larger it becomes? What is it?",
+                "answer": "Hole"
+            },
+            {
+                "id": "20",
+                "question": "What is full of holes, but can still hold a lot of water?",
+                "answer": "Sponge"
+            },
+            {
+                "id": "21",
+                "question": "Where do fish keep their money?",
+                "answer": "Riverbank"
+            },
+            {
+                "id": "22",
+                "question": "What do you get when you cross an automobile with a household animal?",
+                "answer": "Carpet"
+            },
+            {
+                "id": "23",
+                "question": "Mary's father has 4 children; three are named Nana, Nene, and Nini. So what is the 4th child's name?",
+                "answer": "Mary"
+            },
+            {
+                "id": "24",
+                "question": "What bone has a sense of humor?",
+                "answer": "Humorous"
+            },
+            {
+                "id": "25",
+                "question": "The more of them you take, the more you leave behind. What are they?",
+                "answer": "Footsteps"
+            },
+            {
+                "id": "26",
+                "question": "What is that you will break everytime you name it?",
+                "answer": "Silence"
+            },
+            {
+                "id": "27",
+                "question": "What has four fingers and one thumb, but is not alive?",
+                "answer": "Glove"
+            },
+            {
+                "id": "28",
+                "question": "What flies without wings?",
+                "answer": "Time"
+            },
+            {
+                "id": "29",
+                "question": "What turns everything around, but does not move?",
+                "answer": "Mirror"
+            },
+            {
+                "id": "30",
+                "question": "What is half of two plus two?",
+                "answer": "Three"
+            },
+            {
+                "id": "31",
+                "question": "What word looks the same upside down and backwards?",
+                "answer": "Swims"
+            },
+            {
+                "id": "32",
+                "question": "What kind of fish chases a mouse?",
+                "answer": "Catfish"
+            },
+            {
+                "id": "33",
+                "question": "Your mother's brother's only brother-in-law is asleep on your coach. Who is asleep on your couch?",
+                "answer": "Dad"
+            },
+            {
+                "id": "34",
+                "question": "What's the difference between here and there?",
+                "answer": "T"
+            },
+            {
+                "id": "35",
+                "question": "What goes up and down without moving?",
+                "answer": "Stairs"
+            },
+            {
+                "id": "36",
+                "question": "Take off my skin and I won't cry, but you will, What am I?",
+                "answer": "Onion"
+            },
+            {
+                "id": "37",
+                "question": "What doesn't get any wetter, no matter how much rain falls on it?",
+                "answer": "Water"
+            },
+            {
+                "id": "38",
+                "question": "What sits in a corner while traveling all around the world?",
+                "answer": "Stamp"
+            },
+            {
+                "id": "39",
+                "question": "I have a face, two arms, and two hands, yet I can not move. I count to twelve, yet I can not speak. I can still tell you something everyday.",
+                "answer": "Clock"
+            },
+            {
+                "id": "40",
+                "question": "You enter a dark room. You have only one match. There is an oil lamp, a furnace, and a stove in the room. Which would you light first?",
+                "answer": "Match"
+            },
+            {
+                "id": "41",
+                "question": "What is round on both ends and hi in the middle?",
+                "answer": "Ohio"
+            },
+            {
+                "id": "42",
+                "question": "What do you call a dog that sweats so much?",
+                "answer": "Hotdog"
+            },
+            {
+                "id": "43",
+                "question": "What do you call a rabbit with fleas?",
+                "answer": "Bugs Bunny"
+            },
+            {
+                "id": "44",
+                "question": "What rains at the north pole?",
+                "answer": "Reindeer"
+            },
+            {
+                "id": "45",
+                "question": "What kind of apple has a short temper?",
+                "answer": "Crabapple"
+            },
+            {
+                "id": "46",
+                "question": "What do you do with a dead chemist?",
+                "answer": "Barium"
+            },
+            {
+                "id": "47",
+                "question": "What calls for help, when written in capital letters, is the same forwards, backwards and upside down?",
+                "answer": "SOS"
+            },
+            {
+                "id": "48",
+                "question": "What body part is pronounced as one letter but written with three, only two different letters are used?",
+                "answer": "Eye"
+            },
+            {
+                "id": "49",
+                "question": "What is 2+2? What is 4+4? What is 8+8? What is 16+16? Pick a number between 12 and 5",
+                "answer": "Seven"
+            },
+            {
+                "id": "50",
+                "question": "Feed me and I live, give me something to drink and i'll die, What am I?",
+                "answer": "Fire"
+            },
+            {
+                "id": "51",
+                "question": "What keeps things green and keeps kids occupied in the summertime?",
+                "answer": "Sprinkler"
+            },
+            {
+                "id": "52",
+                "question": "Old Mcdonald had this",
+                "answer": "Farm"
+            },
+            {
+                "id": "53",
+                "question": "Poorly behaved children often find themselves sitting in these",
+                "answer": "Corner"
+            },
+            {
+                "id": "54",
+                "question": "Brings you may flowers",
+                "answer": "Showers"
+            },
+            {
+                "id": "55",
+                "question": "A shower that lights up the sky",
+                "answer": "Meteor"
+            },
+            {
+                "id": "56",
+                "question": "Longer than a decade and shorter than a milennium",
+                "answer": "Century"
+            },
+            {
+                "id": "57",
+                "question": "Rolling on floor",
+                "answer": "Laughing"
+            },
+            {
+                "id": "58",
+                "question": "There are four of these, but everyone's favourite seems to be spades",
+                "answer": "Ace"
+            },
+            {
+                "id": "59",
+                "question": "Rabbits do this to carrots and Jason Mraz does this to ears",
+                "answer": "Nibble"
+            },
+            {
+                "id": "60",
+                "question": "These minerals are vital to your health",
+                "answer": "Vitamin"
+            },
+            {
+                "id": "61",
+                "question": "Commits friendly home invasions one night a year",
+                "answer": "Santa claus"
+            },
+            {
+                "id": "62",
+                "question": "Treats said to be based on a shephero's staff",
+                "answer": "Candy cane"
+            },
+            {
+                "id": "63",
+                "question": "Everyone claims to know a way to stop these involuntary contractions but none of them work",
+                "answer": "Hiccup"
+            },
+            {
+                "id": "64",
+                "question": "Has 4 lucky leaves",
+                "answer": "Shamrock"
+            },
+            {
+                "id": "65",
+                "question": "One of the best things you can hope for after whacking a ball with a stick",
+                "answer": "Home run"
+            },
+            {
+                "id": "66",
+                "question": "They put the heat in pop tarts",
+                "answer": "Toaster"
+            },
+            {
+                "id": "67",
+                "question": "What has a ring, but no finger?",
+                "answer": "Telephone"
+            },
+            {
+                "id": "68",
+                "question": "What has four legs, but can't walk?",
+                "answer": "Table"
+            },
+            {
+                "id": "69",
+                "question": "What is higher without the head, than with it?",
+                "answer": "Pillow"
+            },
+            {
+                "id": "70",
+                "question": "What is harder to catch the faster you run?",
+                "answer": "Breath"
+            },
+            {
+                "id": "71",
+                "question": "What invention lets you look right through a wall?",
+                "answer": "Window"
+            },
+            {
+                "id": "72",
+                "question": "What is that you will break everytime you name it?",
+                "answer": "Silence"
+            },
+            {
+                "id": "73",
+                "question": "What is made of wood, but can't be sawed?",
+                "answer": "Sawdust"
+            },
+            {
+                "id": "74",
+                "question": "What is a witch's favorite school subject?",
+                "answer": "Spelling"
+            },
+            {
+                "id": "75",
+                "question": "What is an aliens favourite sport?",
+                "answer": "Spaceball"
+            },
+            {
+                "id": "76",
+                "question": "What is the saddest fruit?",
+                "answer": "Blueberry"
+            },
+            {
+                "id": "77",
+                "question": "What is black and white and read all over?",
+                "answer": "Newspaper"
+            },
+            {
+                "id": "78",
+                "question": "What is easy to get into, and hard to get out of?",
+                "answer": "Trouble"
+            },
+            {
+                "id": "79",
+                "question": "What is there more of the less you see?",
+                "answer": "Darkness"
+            },
+            {
+                "id": "80",
+                "question": "If two hours ago, it was as long after one o'clock in the afternoon as it was before one o'clock in the morning, what time would it be now?",
+                "answer": "Nine"
+            },
+            {
+                "id": "81",
+                "question": "What is as big as you are and yet does not weigh anything?",
+                "answer": "Shadow"
+            },
+            {
+                "id": "82",
+                "question": "What types of words are these: Madam, Civic, Eye, Level?",
+                "answer": "Palindrome"
+            },
+            {
+                "id": "83",
+                "question": "When you have me, you feel like sharing me. But, if you do share me, you don't have me. What am I?",
+                "answer": "Secret"
+            },
+            {
+                "id": "84",
+                "question": "The person who makes it has no need for it. The person who purchases it does not use it. The person who does use it does not know he or she is. What is it?",
+                "answer": "Coffin"
+            },
+            {
+                "id": "85",
+                "question": "It is an insect, and the first part of its name is the name of another insect. What is it?",
+                "answer": "Beetle"
+            },
+            {
+                "id": "86",
+                "question": "What english word retains the same pronunciation, even after you take away four of its five letters?",
+                "answer": "Queue"
+            },
+            {
+                "id": "87",
+                "question": "What becomes white when it is dirty?",
+                "answer": "Blackboard"
+            },
+            {
+                "id": "88",
+                "question": "What word of five letters has only one left when two letters are removed?",
+                "answer": "Stone"
+            },
+            {
+                "id": "89",
+                "question": "How many 9's are there between 1 and 100?",
+                "answer": "Twenty"
+            },
+            {
+                "id": "90",
+                "question": "Which vehicle is spelled the same forwards and backwards?",
+                "answer": "Racecar"
+            },
+            {
+                "id": "91",
+                "question": "I am lighter than air but a million men cannot lift me up, What am I?",
+                "answer": "Bubble"
+            },
+            {
+                "id": "92",
+                "question": "Five men were eating apples, a finished before B, but behind C. D finished before E, but behind B. What was the finishing order?",
+                "answer": "CABDE"
+            },
+            {
+                "id": "93",
+                "question": "David's father has three sons: Snap, Crackle, and ?",
+                "answer": "David"
+            },
+            {
+                "id": "94",
+                "question": "It is everything to someone, and nothing to everyone else. What is it?",
+                "answer": "Mind"
+            },
+            {
+                "id": "95",
+                "question": "What has a mouth but can't chew?",
+                "answer": "River"
+            },
+            {
+                "id": "96",
+                "question": "If it is two hours later, then it will take half as much time till it's midnight as it would be if it were an hour later. What time is it?",
+                "answer": "Nine"
+            },
+            {
+                "id": "97",
+                "question": "Forward I am heavy, backwards I am not. What am I?",
+                "answer": "Ton"
+            },
+            {
+                "id": "98",
+                "question": "What object has keys that open no locks, space but no room, and you can enter but not go in?",
+                "answer": "Keyboard"
+            }
+        ]
+
+        
+        var usedList = []
+
+        // function to choose random question and answer 
+        function generateRiddle(){
+            let rno = Math.floor((Math.random() * 100) + 1);
+            
+            console.log(riddleList[rno].question)
+
+            var question = document.getElementById('questionid');
+            var answer = document.getElementById('answerid');
+            var answertext = document.getElementById('answertextid')
+            question.innerHTML = riddleList[rno].question
+            answertext.innerHTML = riddleList[rno].answer
+            answer.style.visibility = 'hidden';
+            answer.style.opacity = '0';
+
+        }
+
+        generateRiddle()
+
+    </script>
+</body>
+</html>
